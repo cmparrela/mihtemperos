@@ -22,16 +22,24 @@ const SHEET_BASE =
 
 const SHEET_URL = SHEET_BASE;
 
+const isClosedDay = (date: Date): boolean => {
+  const day = date.getDay();
+  return day === 0 || day === 1; // domingo e segunda — loja fechada
+};
+
 const getNextDayDeliverySlots = (): string[] => {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  const next = new Date();
+  next.setDate(next.getDate() + 1);
+  while (isClosedDay(next)) {
+    next.setDate(next.getDate() + 1);
+  }
   const formatted = new Intl.DateTimeFormat("pt-BR", {
     weekday: "long",
     day: "2-digit",
     month: "2-digit",
-  }).format(tomorrow);
+  }).format(next);
   const label = formatted.charAt(0).toUpperCase() + formatted.slice(1);
-  return [`${label} - Manhã (8h - 12h)`, `${label} - Tarde (13h - 18h)`];
+  return [`${label} - Manhã (8h - 12h)`, `${label} - Tarde (13h - 19h)`];
 };
 
 const SHIPPING_FEE = 5;

@@ -1,73 +1,48 @@
-# React + TypeScript + Vite
+# Mih Temperos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Catálogo online da Mih Temperos — "Sabores que transformam". Um PWA leve (React + Vite) para o cliente ver os produtos, montar o carrinho e finalizar o pedido direto pelo WhatsApp, com Pix como forma de pagamento.
 
-Currently, two official plugins are available:
+## Como funciona
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- O catálogo de produtos é lido de uma planilha do Google Sheets publicada como CSV (aba "produtos").
+- O carrinho fica salvo no `localStorage` do navegador, sobrevivendo a recarregamentos de página.
+- O cliente escolhe **Retirar no local** (grátis) ou **Entrega** (com taxa fixa) e uma janela de horário para o dia seguinte.
+- Ao finalizar, o pedido é montado como uma mensagem e enviado via `wa.me` para o WhatsApp da loja.
+- É um PWA (instalável, com ícone e atualização automática do service worker).
 
-## React Compiler
+## Rodando localmente
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+make run
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Isso instala as dependências (se necessário) e sobe o servidor de desenvolvimento em `http://localhost:5173`, abrindo o navegador automaticamente.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Outros comandos úteis:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+make install   # instala as dependências
+make build     # build de produção
+make preview   # serve o build de produção localmente
+make lint      # roda o eslint
 ```
+
+Requer Node 20.19+ ou 22.12+ (veja `.tool-versions`).
+
+## Configuração
+
+Os principais pontos de configuração estão no topo de `src/App.tsx`:
+
+- `SHEET_URL` — link de exportação CSV da planilha de produtos (Google Sheets → Compartilhar → Publicar na web → CSV).
+- `SHIPPING_FEE` / `MIN_ORDER` — taxa de entrega e pedido mínimo.
+- Número do WhatsApp usado no checkout (`phone`, dentro de `handleWhatsAppCheckout`).
+- `PICKUP_ADDRESS` — endereço mostrado para quem escolhe retirar no local.
+
+A planilha de produtos precisa ter, por coluna: id, nome, preço, tipo de unidade (`weight`/`unit`), incremento, mínimo, categoria e imagem.
+
+## Stack
+
+- React 19 + TypeScript + Vite
+- Tailwind CSS v4
+- `vite-plugin-pwa` (PWA/service worker)
+- Deploy: Vercel

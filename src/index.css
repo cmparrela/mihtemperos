@@ -5,6 +5,13 @@
   --color-bg-paper: #f5f2ed;
   --color-fg-dark: #1a1a1a;
   --color-brand-orange: #ea580c; /* Cor de acento para hover */
+
+  /* Paleta Mih Temperos */
+  --color-brand-brown: #5b3718;
+  --color-brand-olive: #66743a;
+  --color-brand-gold: #b8873a;
+  --color-brand-cream: #eadcc4;
+  --color-brand-paper: #f6f1e7;
   
   /* Tipografia Brutalista */
   --font-technical: "Inter", "Geist", sans-serif;

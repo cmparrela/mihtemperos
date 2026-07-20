@@ -28,11 +28,11 @@ export default defineConfig({
         ],
       },
       manifest: {
-        name: "Pomar no Prédio",
-        short_name: "Pomar no Prédio",
+        name: "Mih Temperos",
+        short_name: "Mih Temperos",
         description:
-          "Encontre, compre e receba frutas fresquinhas do seu apartamento!",
-        theme_color: "#10b981",
+          "Encontre e peça temperos e ervas selecionados — retire no local ou receba em casa!",
+        theme_color: "#5B3718",
         icons: [
           {
             src: "192x192.png",
